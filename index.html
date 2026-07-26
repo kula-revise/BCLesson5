@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Build the Essay | Black Consciousness | Kula Revise</title>
+<style>
+  :root {
+    --page: #EFE6D6; --card: #FBF7EF; --ink: #1E1A15;
+    --umber: #7A4A28; --deep: #4A331F; --moss: #55603C; --grey: #8B8072;
+    --hair: rgba(30,26,21,0.16);
+    --serif: 'Palatino Linotype','Book Antiqua',Palatino,'Iowan Old Style','Times New Roman',serif;
+    --mono: 'Courier New',Courier,'Nimbus Mono PS',monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; border-radius: 0; }
+  body {
+    min-height: 100vh; background: var(--page);
+    padding: 1.8rem 1rem 3rem; font-family: var(--serif);
+    color: var(--ink); line-height: 1.72; font-size: 17px;
+  }
+  .container { max-width: 700px; margin: 0 auto; }
+  .eyebrow, .chip, .stage-tag, .intro-label, .expl-label, .breakdown-label,
+  .score-label, .essaypanel-label, .qbox .qlabel, .source-attr, .evtag,
+  .top-meta, .btn-primary, .btn-secondary, .scenario-meta, .imgslot, .figure figcaption {
+    font-family: var(--mono);
+  }
+  .top-bar { margin-bottom: 2rem; }
+  .top-meta { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--umber); margin-bottom: 0.6rem; gap: 1rem; flex-wrap: wrap; }
+  .top-count { color: var(--grey); letter-spacing: 0.08em; text-transform: none; }
+  .track { height: 1px; background: var(--hair); }
+  .fill { height: 100%; background: var(--umber); transition: width 0.45s ease; width: 0%; }
+  .header-block { text-align: left; margin-bottom: 2.4rem; }
+  .eyebrow { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--umber); margin-bottom: 1rem; }
+  .masthead { font-size: clamp(2rem,5.5vw,3rem); font-weight: normal; line-height: 1.14; letter-spacing: -0.005em; }
+  .sub { font-family: var(--mono); font-size: 0.76rem; color: var(--grey); margin-top: 1rem; letter-spacing: 0.08em; }
+  .rule { width: 100%; height: 1px; background: var(--hair); margin: 1.6rem 0 0; position: relative; }
+  .rule::before { content: ""; position: absolute; left: 0; top: 0; width: 46px; height: 3px; background: var(--umber); }
+  .intro-box { background: transparent; border: none; border-left: 2px solid var(--umber); padding: 0.2rem 0 0.2rem 1.4rem; margin-bottom: 2rem; }
+  .intro-label { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--umber); margin-bottom: 0.7rem; }
+  .intro-text { line-height: 1.8; font-size: 1rem; }
+  .key-row { display: grid; grid-template-columns: repeat(auto-fit,minmax(178px,1fr)); gap: 1rem; margin-bottom: 2.2rem; }
+  .key-item { display: flex; flex-direction: column; gap: 0.55rem; padding: 0; }
+  .chip { display: inline-block; padding: 0.18rem 0.55rem; font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; width: fit-content; border: 1px solid var(--umber); color: var(--umber); }
+  .chip-argue { border-color: var(--umber); color: var(--umber); }
+  .chip-evidence { border-color: var(--ink); color: var(--ink); }
+  .chip-weigh { background: var(--umber); border-color: var(--umber); color: var(--card); }
+  .chip-instinct { background: var(--ink); border-color: var(--ink); color: var(--page); }
+  .key-desc { font-size: 0.86rem; color: var(--grey); }
+  .card { background: var(--card); border: none; box-shadow: none; border-left: 2px solid var(--hair); padding: 1.8rem 1.5rem 1.9rem; margin-bottom: 1.6rem; }
+  .stage-tag { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--umber); margin-bottom: 1.1rem; }
+  .card h2 { font-size: clamp(1.45rem,4.4vw,1.85rem); font-weight: normal; line-height: 1.22; margin-bottom: 1.1rem; }
+  .card p { font-size: 1rem; line-height: 1.82; margin-bottom: 1rem; }
+  .card p:last-child { margin-bottom: 0; }
+  .pull { border-left: 2px solid var(--umber); padding: 0.1rem 0 0.1rem 1.2rem; margin: 1.4rem 0; color: var(--deep); font-style: italic; }
+  .scenario { background: transparent; border: none; border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); padding: 1.3rem 0; margin: 1.3rem 0 0.3rem; font-size: 1.02rem; line-height: 1.82; }
+  .scenario-meta { padding: 0.9rem 0 0; font-size: 0.72rem; color: var(--grey); letter-spacing: 0.09em; text-transform: uppercase; }
+  .source { background: #fff; border: none; box-shadow: none; border-left: 2px solid var(--umber); padding: 1.3rem 1.3rem 1.3rem 1.4rem; margin: 1.6rem 0; transform: none; }
+  .source-attr { font-size: 0.68rem; color: var(--umber); background: transparent; margin: 0 0 1.1rem; padding: 0 0 0.8rem; border-bottom: 1px solid var(--hair); line-height: 1.7; letter-spacing: 0.1em; text-transform: uppercase; }
+  .source-body { font-family: var(--mono); font-size: 0.88rem; line-height: 1.9; }
+  .source-body em { color: var(--deep); font-style: normal; border-bottom: 1px solid var(--umber); }
+  .toggle-btn { background: transparent; border: none; color: var(--umber); cursor: pointer; font-family: var(--mono); font-size: 0.76rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: underline; padding: 1rem 0 0; }
+  .toggle-body { display: none; margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid var(--hair); font-size: 0.94rem; color: var(--deep); line-height: 1.78; }
+  .toggle-body.open { display: block; }
+  .evtag { display: inline-block; margin-top: 1.2rem; font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.2rem 0 0.2rem 0.7rem; border: none; border-left: 2px solid var(--umber); color: var(--grey); }
+  .evtag.home { border-left-color: var(--umber); }
+  .evtag.ground { border-left-color: var(--moss); }
+  .evtag.exit { border-left-color: var(--ink); }
+  .imgslot { margin: 1.2rem 0 0.3rem; padding: 1.5rem 1rem; border: 1px dashed var(--hair); text-align: center; font-size: 0.74rem; color: var(--grey); background: transparent; letter-spacing: 0.05em; }
+  .figure { margin: 1.2rem 0 0.4rem; }
+  .figure img { display: block; height: auto; border: none; margin: 0 auto; }
+  .figure.wide img { width: 100%; max-width: 460px; }
+  .figure.portrait img { width: 100%; max-width: 320px; }
+  .figure figcaption { font-size: 0.72rem; color: var(--grey); margin-top: 0.7rem; line-height: 1.7; text-align: left; }
+  .stencil { display: block; width: 100%; max-width: 250px; margin: 0 0 1.4rem; }
+
+  .q-text { font-size: 1.16rem; line-height: 1.6; margin-bottom: 1.5rem; }
+  .options { display: flex; flex-direction: column; gap: 0.1rem; margin-bottom: 1.4rem; }
+  .option { display: flex; align-items: flex-start; gap: 0.9rem; padding: 0.95rem 1rem 0.95rem 0.9rem; background: transparent; border: none; border-top: 1px solid var(--hair); border-left: 2px solid transparent; cursor: pointer; font-family: var(--serif); text-align: left; font-size: 0.97rem; line-height: 1.65; color: var(--ink); transition: all 0.15s; width: 100%; }
+  .option:last-child { border-bottom: 1px solid var(--hair); }
+  .option:hover:not(:disabled) { background: #fff; border-left-color: var(--hair); }
+  .option:disabled { cursor: default; }
+  .option.selected { background: #fff; border-left-color: var(--umber); }
+  .option.correct { background: #fff; border-left-color: var(--moss); }
+  .option.wrong { background: #fff; border-left-color: var(--umber); color: var(--grey); }
+  .option.dimmed { opacity: 0.42; }
+  .opt-letter { font-family: var(--mono); font-size: 0.8rem; color: var(--umber); min-width: 1.2rem; padding-top: 0.15rem; }
+  .opt-text { flex: 1; }
+  .opt-mark { font-size: 1rem; }
+  .explanation { background: transparent; border: none; border-left: 2px solid var(--umber); padding: 0.2rem 0 0.2rem 1.3rem; margin-bottom: 0.4rem; }
+  .expl-label { font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--umber); margin-bottom: 0.6rem; }
+  .expl-text { line-height: 1.8; font-size: 0.95rem; }
+  .skill-callout { background: transparent; border: none; border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); padding: 1.1rem 0; margin: 1.3rem 0; }
+  .skill-list { margin: 0.6rem 0 0 0; padding-left: 0; list-style: none; }
+  .skill-list li { font-size: 0.94rem; line-height: 1.75; margin-bottom: 0.5rem; padding-left: 1.2rem; position: relative; }
+  .skill-list li::before { content: "\203A"; position: absolute; left: 0; color: var(--umber); font-family: var(--mono); }
+
+  .nav { display: flex; justify-content: space-between; gap: 0.8rem; margin-top: 0.6rem; }
+  .btn-secondary { padding: 0.75rem 0; background: transparent; border: none; color: var(--grey); font-size: 0.72rem; cursor: pointer; letter-spacing: 0.14em; text-transform: uppercase; }
+  .btn-secondary:hover:not(:disabled) { color: var(--ink); }
+  .btn-secondary:disabled { opacity: 0.3; cursor: not-allowed; }
+  .btn-primary { padding: 0.8rem 1.6rem; background: var(--ink); border: none; color: var(--page); font-size: 0.72rem; cursor: pointer; letter-spacing: 0.14em; text-transform: uppercase; }
+  .btn-primary:hover:not(:disabled) { background: var(--umber); }
+  .btn-primary:disabled { opacity: 0.28; cursor: not-allowed; }
+  .btn-start { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.3rem 1.4rem; background: var(--card); color: var(--ink); border: none; border-left: 3px solid var(--umber); cursor: pointer; font-family: var(--serif); text-align: left; transition: all 0.2s; }
+  .btn-start:hover { background: #fff; padding-left: 1.7rem; }
+  .btn-start .st { font-size: 1.06rem; }
+  .btn-start .sa { font-size: 1.2rem; color: var(--umber); }
+  .score-row { display: grid; grid-template-columns: repeat(auto-fit,minmax(122px,1fr)); gap: 1.4rem; margin-bottom: 1.8rem; }
+  .score-block { background: transparent; border: none; border-top: 1px solid var(--hair); padding: 1rem 0 0; text-align: left; }
+  .score-num { font-size: 2.5rem; font-weight: normal; color: var(--ink); line-height: 1; }
+  .score-num.red { color: var(--umber); }
+  .score-den { font-size: 1rem; color: var(--grey); }
+  .score-label { font-size: 0.64rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--grey); margin-top: 0.7rem; }
+  .grade-desc { text-align: left; margin-bottom: 2rem; line-height: 1.8; font-style: italic; color: var(--deep); }
+  .breakdown { background: transparent; border: none; border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); padding: 1.4rem 0; margin-bottom: 1.8rem; }
+  .breakdown-label { font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--umber); margin-bottom: 1.2rem; text-align: left; }
+  .bd-row { display: grid; grid-template-columns: 1fr 110px 46px; gap: 0.8rem; align-items: center; margin-bottom: 0.85rem; font-size: 0.9rem; }
+  .bd-name { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.06em; }
+  .bd-bar { height: 1px; background: var(--hair); }
+  .bd-fill { height: 3px; margin-top: -1px; background: var(--umber); transition: width 0.45s; }
+  .bd-score { font-family: var(--mono); font-size: 0.78rem; color: var(--grey); text-align: right; }
+  .essaypanel { background: #fff; border: none; border-left: 2px solid var(--moss); padding: 1.3rem 1.3rem 1.3rem 1.4rem; margin-top: 1.5rem; }
+  .essaypanel-label { font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--moss); margin-bottom: 0.9rem; display: flex; align-items: center; gap: 0.5rem; }
+  .essaypanel-label .tick { color: var(--moss); font-size: 0.8rem; }
+  .essaypanel p { font-size: 0.94rem; line-height: 1.82; margin-bottom: 0.8rem; text-indent: 1.2rem; }
+  .essaypanel p:first-of-type { text-indent: 0; }
+  .essaypanel p:last-child { margin-bottom: 0; }
+  .finalessay { background: #fff; border: none; border-left: 2px solid var(--ink); padding: 1.7rem 1.5rem; margin: 1.4rem 0; }
+  .finalessay .fq { font-family: var(--mono); color: var(--umber); font-size: 0.82rem; line-height: 1.8; margin-bottom: 1.3rem; padding-bottom: 1.1rem; border-bottom: 1px solid var(--hair); }
+  .finalessay p { font-size: 0.98rem; line-height: 1.86; margin-bottom: 1rem; text-indent: 1.3rem; }
+  .finalessay p:first-of-type { text-indent: 0; }
+  .finalessay p:last-child { margin-bottom: 0; }
+  .qbox { background: transparent; border: none; border-left: 2px solid var(--umber); padding: 0.2rem 0 0.2rem 1.3rem; margin: 1.5rem 0 1.7rem; }
+  .qbox .qlabel { font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--umber); margin-bottom: 0.7rem; }
+  .qbox .qtext { font-size: 1.04rem; line-height: 1.75; font-style: italic; }
+  .hidden { display: none !important; }
+  .footer { text-align: left; font-family: var(--mono); font-size: 0.7rem; color: var(--grey); margin-top: 2.4rem; padding-top: 1.4rem; border-top: 1px solid var(--hair); line-height: 1.85; letter-spacing: 0.04em; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="top-bar hidden" id="top-bar">
+    <div class="top-meta"><span id="stage-name">Black Consciousness</span><span class="top-count" id="step-count">Step 1</span></div>
+    <div class="track"><div class="fill" id="fill"></div></div>
+  </div>
+
+  <div id="start-screen">
+    <div class="header-block">
+      <svg class="stencil" viewBox="0 0 250 96" xmlns="http://www.w3.org/2000/svg" role="presentation" aria-hidden="true">
+        <rect x="0" y="0" width="2" height="96" fill="#7A4A28"/>
+        <rect x="18" y="10" width="150" height="3" fill="#1E1A15"/>
+        <rect x="18" y="24" width="196" height="3" fill="#1E1A15"/>
+        <rect x="18" y="38" width="118" height="3" fill="#1E1A15"/>
+        <rect x="18" y="52" width="176" height="3" fill="#1E1A15"/>
+        <rect x="14" y="49" width="130" height="1" fill="#7A4A28"/>
+        <rect x="18" y="66" width="88" height="3" fill="#1E1A15"/>
+        <rect x="18" y="80" width="204" height="3" fill="#1E1A15"/>
+      </svg>
+      <div class="eyebrow">Kula Revise &middot; Grade 12 History &middot; Civil Resistance</div>
+      <h1 class="masthead">Build the Essay</h1>
+      <div class="sub">The capstone &middot; NSC P2 May and June 2025, Question 4 &middot; Lesson 5 of 5</div>
+      <div class="rule"></div>
+    </div>
+    <div class="intro-box">
+      <div class="intro-label">Where we are</div>
+      <p class="intro-text">This is the real thing. The question below was set in the National Senior Certificate History Paper 2 in May and June 2025, and every paragraph you are about to build matches a point in the official memo, the answer sheet the markers work from. You have already made the four arguments. Now you assemble them, one decision at a time, and walk away holding the finished answer.</p>
+    </div>
+    <div class="key-row">
+      <div class="key-item"><span class="chip chip-argue">Argue</span><span class="key-desc">Take a clear line of argument</span></div>
+      <div class="key-item"><span class="chip chip-evidence">Evidence</span><span class="key-desc">Back the case with specific facts</span></div>
+      <div class="key-item"><span class="chip chip-weigh">Weigh</span><span class="key-desc">Judge it, and say how far you agree</span></div>
+    </div>
+    <button class="btn-start" id="begin-btn"><span class="st">Start with the argument</span><span class="sa">&rarr;</span></button>
+    <div class="footer">About 25 minutes. Eight build decisions. You finish with a complete 50 mark essay you built yourself.</div>
+  </div>
+
+  <div id="flow-screen" class="hidden">
+    <div class="card" id="flow-card"></div>
+    <div class="nav">
+      <button class="btn-secondary" id="back-btn">&larr; Back</button>
+      <button class="btn-primary" id="next-btn">Continue &rarr;</button>
+    </div>
+  </div>
+
+  <div id="results-screen" class="hidden">
+    <div class="header-block">
+      <div class="eyebrow">Series complete</div>
+      <h1 class="masthead" style="font-size: clamp(1.9rem,6vw,3rem);">Where you stand</h1>
+      <div class="rule"></div>
+    </div>
+    <div class="score-row">
+      <div class="score-block"><div class="score-num"><span id="r-correct">0</span><span class="score-den">/<span id="r-total">0</span></span></div><div class="score-label">Argument moves</div></div>
+      <div class="score-block"><div class="score-num"><span id="r-pct">0</span><span class="score-den">%</span></div><div class="score-label">Accuracy</div></div>
+      <div class="score-block"><div class="score-num red" id="r-band">-</div><div class="score-label">Standard</div></div>
+    </div>
+    <div class="grade-desc" id="r-desc"></div>
+    <div class="breakdown"><div class="breakdown-label">By essay skill</div><div id="r-breakdown"></div></div>
+    <div class="card">
+      <div class="stage-tag">What you are holding</div>
+      <p>A complete answer to a real NSC question, built from the real memo, in the correct shape for a 'critically discuss' essay: a stance, context, four bodies of evidence, a counter-argument, and a conclusion that answers the word 'only' directly.</p><p class="pull">Do not memorise it. Memorised essays are exactly what this way of marking is designed to catch, and a marker can spot one from the first paragraph.</p><p>What is worth keeping is the shape and the eight decisions. Put the same shape over a different Question 4 and it still holds.</p>
+    </div>
+    <div class="nav" style="justify-content: center;"><button class="btn-primary" id="redo-btn">&#8635; Restart lesson</button></div>
+    <div class="footer">Last step in this unit: Knowledge Check 2. Same facts as the check you did before Lesson 1, asked differently, so you can see what stuck.</div>
+  </div>
+</div>
+
+<script>
+const QUESTION = "'Political liberation of black South Africans was the only focus of the Black Consciousness Movement.' Critically discuss this statement with reference to the philosophy and actions of the Black Consciousness Movement during the late 1960s and 1970s. Support your line of argument with relevant historical evidence. [50]";
+
+const ESSAY_SCREEN = {"label": "The finished answer", "heading": "Your essay, assembled", "intro": "Eight decisions, eight paragraphs. Every one of them matches a point in the official memo for this question, which is why this shape earns marks and a well-written retelling of the same events does not.", "outro": "In the exam you would write this in your own words and in your own handwriting, and it would run to about three pages. The shape is exactly this: a line of argument stated in the introduction, context, four bodies of evidence, a counter-argument, and a conclusion that returns to the word 'only' and answers it."};
+
+const BANDS = [
+  {
+    "min": 85,
+    "band": "7",
+    "desc": "Top band. You chose the arguing sentence almost every time and refused the two traps that cost most people the most marks: telling the story instead of arguing, and claiming more than the evidence allows. Write this question out in full under timed conditions next."
+  },
+  {
+    "min": 72,
+    "band": "6",
+    "desc": "Strong and well controlled. Look again at any decision where you took the descriptive option, because a page of accurate story-telling is what holds a good answer in the middle marks."
+  },
+  {
+    "min": 58,
+    "band": "5",
+    "desc": "The content is there and the argument comes and goes. Go back through the explanations on every decision you missed and notice how the correct sentence always connects a fact to a claim."
+  },
+  {
+    "min": 44,
+    "band": "4",
+    "desc": "You are describing more than arguing, which is the single most common reason a well-prepared answer lands in the middle marks. Redo the capstone before writing the essay out."
+  },
+  {
+    "min": 30,
+    "band": "3",
+    "desc": "Go back to Lesson 2 and Lesson 3, then return here. The trouble is usually the argument rather than the facts, and repeating the capstone on shaky arguments will not fix it."
+  },
+  {
+    "min": 0,
+    "band": "2",
+    "desc": "Restart the series from Lesson 1. Nothing here is memory work, so more revision of the facts will not help: the skill is choosing which sentence does a job."
+  }
+];
+
+const FLOW = [
+  {
+    "type": "narrative",
+    "stage": "Recognise",
+    "html": "<div class=\"stage-tag\">The task</div><h2>The real question</h2><div class=\"qbox\"><div class=\"qlabel\">NSC History P2, May and June 2025, Question 4</div><div class=\"qtext\">'Political liberation of black South Africans was the only focus of the Black Consciousness Movement.' Critically discuss this statement with reference to the philosophy and actions of the Black Consciousness Movement during the late 1960s and 1970s. Support your line of argument with relevant historical evidence. [50]</div></div><p>Three things in that wording are worth more than any fact you know.</p><p><strong>'Critically discuss'</strong> does not mean 'discuss'. It means take a position, defend it, and then deal with the strongest case against it before you conclude. An essay without that counter-argument step cannot reach the top marks.</p><p><strong>'The late 1960s and 1970s'</strong> is a fence. The United Democratic Front, COSATU, the tricameral parliament and the states of emergency are all outside it. Every sentence you spend there earns nothing.</p><p><strong>'Only'</strong> is where the marks live. The statement is not false. It is too narrow, and your job is to show exactly how narrow.</p>"
+  },
+  {
+    "type": "narrative",
+    "stage": "Recognise",
+    "html": "<div class=\"stage-tag\">How it is marked</div><h2>Two readings, one mark</h2><p>Your essay is not marked line by line. It is read twice, whole, and given two scores.</p><p>The first reading is for <strong>content</strong>: how far you actually answered the question, and how much of your material was relevant. The second is for <strong>presentation</strong>: whether the essay was planned, whether one argument ran through it, and whether the conclusion came out of the evidence. The two scores are read off against each other on a grid, and where they meet is your mark.</p><p>This is why knowing a lot will not carry you on its own. If you know everything about the Black Consciousness Movement and write it all down in order, you will do well on the first reading and badly on the second. The official memo, which is the answer sheet your marker works from, has a standard phrase for that essay: largely descriptive, no attempt at a line of argument.</p><p class=\"pull\">Every decision that follows is the same decision, and it is the one the second reading is looking for.</p>"
+  },
+  {
+    "type": "narrative",
+    "stage": "Destabilise",
+    "html": "<div class=\"stage-tag\">What you already have</div><h2>Four moves, made across four lessons</h2><p><strong>One.</strong> Political liberation was a real aim, because after 1960 black South Africans had no legal party, no vote and no citizenship of their own country.</p><p><strong>Two.</strong> But the starting diagnosis was psychological: Biko argued that liberation had to begin in the mind of the oppressed.</p><p><strong>Three.</strong> The movement acted on economic and social conditions, building clinics, funds and unions the state would not build.</p><p><strong>Four.</strong> In the schools the fronts fused, and the state's own response in 1977 revealed what it thought it was facing.</p><p>You are not learning anything new from here. You are choosing which sentence does the job, eight times.</p>"
+  },
+  {
+    "type": "question",
+    "stage": "Act",
+    "build": true,
+    "part": "Political liberation was undoubtedly one focus of the Black Consciousness Movement, but it was never the only one. Between 1968 and 1977 the movement pursued psychological, economic and social liberation alongside the political, and it did so deliberately, because it argued that political freedom would mean very little to people who had been taught to think of themselves as inferior. This essay will show that the political aims were real, that the psychological diagnosis came first, that the movement built economic and social institutions of its own, and that the repression it eventually met reveals the state's judgement rather than the full range of the movement's purposes.",
+    "q": "Decision one. Your introduction has to state a line of argument. Which one?",
+    "level": "Argue",
+    "options": [
+      "Political liberation was one focus of the movement but not the only one: it also pursued psychological, economic and social liberation.",
+      "The Black Consciousness Movement was founded in the late 1960s by black students who broke away from the National Union of South African Students.",
+      "Political liberation was indeed the only focus of the Black Consciousness Movement, as the statement claims, and the evidence bears this out."
+    ],
+    "correct": 0,
+    "explanation": "The first option states a position and previews the evidence, which is what an introduction is for and it is the first tick on the memo. The second is an accurate opening that commits to nothing, so the marker reaches paragraph two still not knowing what you think. The third is worth understanding rather than just avoiding: on some questions you could argue either way, but the official memo for this one tells markers to expect you to show that political liberation was not the only focus, and the evidence does not support the opposite case."
+  },
+  {
+    "type": "question",
+    "stage": "Act",
+    "build": true,
+    "part": "The movement emerged in a political vacuum. After the Sharpeville shootings of 1960 the government banned the African National Congress and the Pan Africanist Congress, and the Rivonia Trial of 1964 sent the leadership of Umkhonto we Sizwe to life imprisonment. Opposition was driven underground and into exile, the police were given powers of detention without trial, and critics were placed under restriction orders or house arrest. It was into that silence that a new generation of black students began to organise.",
+    "q": "Decision two. Context. Which sentence sets up the movement without wasting a paragraph?",
+    "level": "Evidence",
+    "options": [
+      "After the 1960 bannings and the Rivonia Trial there was no legal black political organisation left in the country.",
+      "Sharpeville happened in 1960, the Rivonia Trial was in 1964, and Oliver Tambo led the ANC from Lusaka in Zambia.",
+      "The 1960s were a decade of continuous mass protest inside South Africa, which is what Black Consciousness grew out of."
+    ],
+    "correct": 0,
+    "explanation": "Context earns marks only when it explains why the thing you are writing about happened. The first option turns three events into a condition, and that condition is the reason a new movement was needed. The second is a correct list of facts and it does not explain anything. The third is a wrong statement: the 1960s were a decade of suppression rather than mass protest, and a marker will score the error even though the sentence sounds confident."
+  },
+  {
+    "type": "question",
+    "stage": "Act",
+    "build": true,
+    "part": "Political liberation was necessary, and the movement said so. Black South Africans were not full citizens, held no vote in the country of their birth, and under Bantustanisation were made citizens of homelands that no foreign state recognised. Black students broke away from the white-dominated National Union of South African Students to form the South African Students' Organisation in 1968 under the leadership of Steve Biko, while the South African Students' Movement carried the philosophy into the schools. In 1972 the Black People's Convention was formed as an umbrella body drawing in students, churches, communities and trade unions, and in 1974 SASO and the BPC held rallies celebrating FRELIMO's victory in Mozambique, for which their leaders were detained. Those arrests heightened political activism rather than reducing it.",
+    "q": "Decision three. First body paragraph: the political front. Which topic sentence?",
+    "level": "Evidence",
+    "options": [
+      "Political liberation was necessary because black South Africans had no vote and, under Bantustanisation, no South African citizenship.",
+      "SASO was formed in 1968, SASM took the philosophy into the schools, and the BPC followed as an umbrella body in 1972.",
+      "The movement avoided political organisation entirely, which is why its leaders were never detained during the 1970s."
+    ],
+    "correct": 0,
+    "explanation": "Conceding the political front is not a weakness in this essay, it is the move that makes the rest of it credible: you agree with what the statement gets right so that your attack on 'only' cannot be dismissed as one-sided. The second option lists the organisations without saying why they existed, which is the descriptive trap. The third is both a wrong line and a factual error, since Black Consciousness leaders were detained repeatedly, including after the FRELIMO rallies of 1974."
+  },
+  {
+    "type": "question",
+    "stage": "Act",
+    "build": true,
+    "part": "The movement's distinctive contribution, however, was psychological. Biko argued that the most damaging effect of colonialism and apartheid was that black South Africans had come to accept the inferiority imposed on them, and that liberation therefore had to begin in the mind. Black Consciousness set out to instil pride, self-confidence, self-reliance and a sense of identity, and to break the spirit of self-pity and self-alienation that generations of domination had produced. It rejected the government's term 'non-white', which defined people by what they were not, and defined 'black' to include all those who were discriminated against as a group in law, politics, the economy and society. This was not a substitute for political liberation but its precondition, and it was something no election could have delivered.",
+    "q": "Decision four. Second body paragraph: the psychological front. Which topic sentence?",
+    "level": "Argue",
+    "options": [
+      "The movement's distinctive contribution was psychological: Biko argued liberation had to begin in the mind before politics could matter.",
+      "Biko read Frantz Fanon, wrote under the name Frank Talk, and rejected the apartheid term 'non-white' in favour of 'black'.",
+      "Because the movement was concerned with pride and identity, it had no interest in the political condition of black South Africans."
+    ],
+    "correct": 0,
+    "explanation": "This is the paragraph that breaks the statement, so its topic sentence has to make a claim rather than introduce a topic. The word 'before' does the work: it establishes an order between the two kinds of liberation, and an order is an argument. The second option is a set of true facts about Biko with no claim attached. The third contains a reason and is still wrong, because it contradicts the paragraph you wrote immediately before it, and a marker reading an essay that argues against itself drops your second score."
+  },
+  {
+    "type": "question",
+    "stage": "Act",
+    "build": true,
+    "part": "The movement pursued economic liberation as well. It used workers' organisation to challenge the apartheid state, mobilising black workers into trade unions and giving rise to the Black Allied Workers' Union in 1973, the year in which a wave of strikes in Durban involving some sixty thousand workers produced the first independent black trade unions. Alongside this ran the economic arm of the community programmes, including the Zimele Trust Fund and rural home industries for women, all of them built on the principle that black communities should provide for themselves rather than depend on white assistance.",
+    "q": "Decision five. Third body paragraph: the economic front. Which topic sentence?",
+    "level": "Evidence",
+    "options": [
+      "The movement pursued economic liberation too, organising workers into unions and building funds on the principle of self-reliance.",
+      "The Black Allied Workers' Union was formed in 1973, and 160 strikes took place in Durban early that year.",
+      "Black Consciousness organised the Durban strikes of 1973 and brought sixty thousand workers out on its own instruction."
+    ],
+    "correct": 0,
+    "explanation": "The first option names the front and the principle holding it together, so every fact that follows has somewhere to attach. The second gives two accurate figures and no argument. The third is the trap this series has warned about twice: it is an overclaim. The Durban strikes were largely spontaneous, and writing that the movement organised them converts a strong paragraph into one containing a wrong statement, which a marker will score as such."
+  },
+  {
+    "type": "question",
+    "stage": "Act",
+    "build": true,
+    "part": "Social liberation was pursued through the Black Community Programmes. Biko's banishment to King William's Town in 1973 turned his own energy towards this work, and the movement established the Zanempilo Community Health Clinic near King William's Town, the Ithuseng Community Health Programme at Lenyenye, the Ginsburg Educational Trust, the Solempilo centre and the winter school projects, along with literacy campaigns, legal advice and leadership training for young activists. Black Consciousness also won a hearing in print, through its own newsletters and through journalists sympathetic to it on newspapers such as the World, giving black South Africans an account of their own affairs that the white-owned press did not provide.",
+    "q": "Decision six. Fourth body paragraph: the social front. Which topic sentence?",
+    "level": "Argue",
+    "options": [
+      "Social liberation was pursued through community programmes built on doing without the white assistance apartheid assumed was necessary.",
+      "The Zanempilo clinic, the Ithuseng centre, the Ginsburg Educational Trust and the winter school projects were all Black Community Programmes.",
+      "By the mid-1970s the movement had become a charity, and its social work had replaced any political purpose it once had."
+    ],
+    "correct": 0,
+    "explanation": "The first sentence explains what the programmes were for, which is the difference between a clinic as welfare and a clinic as an argument about dependence. The second names four of them correctly and says nothing about any of them, and that reads as good content with no argument attached. The third abandons the political front you conceded in decision three, which would leave the marker reading an essay that argues against itself."
+  },
+  {
+    "type": "question",
+    "stage": "Act",
+    "build": true,
+    "part": "It can be argued against this that the political was always the real point. Black Consciousness ideas reached the schools through the South African Students' Movement, and when a departmental circular required Afrikaans as a medium of instruction, students rejected the language and then the system behind it, forming the Soweto Students' Representative Council and marching on 16 June 1976. The apartheid state read that as a political challenge and acted accordingly: in October 1977 it banned seventeen organisations, among them SASO, SASM and the Black People's Convention, and Steve Biko died in police detention in September of that year. What this shows, however, is the state's judgement rather than the movement's range of aims. The students of 1976 refused Afrikaans because they had already been taught to refuse inferiority, which makes Soweto evidence of the psychological and educational work rather than a replacement for it.",
+    "q": "Decision seven. 'Critically discuss' requires this paragraph. Which one does the job?",
+    "level": "Weigh",
+    "options": [
+      "Against this, the state read the movement as political and banned it: yet that reveals the state's judgement, not its aims.",
+      "In October 1977 the government banned seventeen organisations, including SASO, SASM and the Black People's Convention, and Biko died in detention.",
+      "The bannings of 1977 settle the question and show the movement had been purely political throughout the whole period."
+    ],
+    "correct": 0,
+    "explanation": "A 'critically discuss' answer must put the strongest case against itself and then answer it, and this is the paragraph where the top marks are won or lost. The first option does both halves: it states the counter-case fairly and then shows precisely what it does and does not prove. The second gives the counter-case with no reply, which leaves the objection standing at the end of your essay. The third states the counter-case and then surrenders to it, which throws away everything the previous four paragraphs established."
+  },
+  {
+    "type": "question",
+    "stage": "Act",
+    "build": true,
+    "part": "Political liberation was therefore one focus of the Black Consciousness Movement but not its only one. The philosophy and actions of the movement in the late 1960s and 1970s show psychological, economic and social liberation being pursued at the same time and understood as inseparable from each other, with the political aims resting on the psychological ones rather than standing apart from them. The statement is accurate in what it includes and misleading in what it leaves out, and on the evidence the word 'only' cannot be sustained.",
+    "q": "Decision eight. The conclusion. Which one earns the conclusion tick?",
+    "level": "Weigh",
+    "options": [
+      "Political liberation was one focus but not the only one: the movement treated the four kinds of liberation as inseparable.",
+      "The Black Consciousness Movement was politically, psychologically, economically and socially active throughout the late 1960s and the 1970s.",
+      "In conclusion the movement failed, since apartheid was still in place when Steve Biko died in police detention in 1977."
+    ],
+    "correct": 0,
+    "explanation": "A conclusion has to return to the statement and deliver a verdict drawn from the evidence, which is what the memo means by an independent conclusion. The first option does that and names the reason. The second summarises the essay without judging anything, and a summary is not a conclusion. The third answers a question nobody asked: whether the movement succeeded is a different essay, and by 1977 it is also outside what the evidence in this one supports."
+  },
+  {
+    "type": "essay",
+    "stage": "Transfer"
+  },
+  {
+    "type": "narrative",
+    "stage": "Transfer",
+    "html": "<div class=\"stage-tag\">Beyond the exam</div><h2>The word to keep is 'only'</h2><p>Every decision you made in this capstone came down to the same thing: refusing a statement that was true as far as it went, and being precise about where it stopped going.</p><p>That is not an exam trick. Most of the claims you will meet in your life are like this one. Not lies, which are easy. True things, stated so narrowly that everything important has been left outside the sentence. The useful question is almost never whether a claim is true. It is what the claim leaves out, and who benefits from it being left out.</p><p>You built a fifty mark answer out of that single question. It works on rather more than exam papers.</p>"
+  }
+];
+
+const DIFF = {
+  Argue:{ label:"Argue &middot; line of argument", cls:"chip-argue" },
+  Evidence:{ label:"Evidence &middot; back it up", cls:"chip-evidence" },
+  Weigh:{ label:"Weigh &middot; how far do you agree", cls:"chip-weigh" }
+};
+const KIND = {
+  everyday:{ label:"Your instinct", cls:"chip-instinct" },
+  reveal:{ label:"Plot twist", cls:"chip-instinct" },
+  decision:{ label:"Your call", cls:"chip-instinct" },
+  chain:{ label:"Next link", cls:"chip-instinct" }
+};
+const LEVELS = ["Argue","Evidence","Weigh"];
+
+const state = { idx:0, answers:{}, revealed:{}, order:{} };
+const questionIds = FLOW.map((f,i)=>f.type==="question"?i:null).filter(i=>i!==null);
+const assessedIds = FLOW.map((f,i)=>(f.type==="question"&&f.level)?i:null).filter(i=>i!==null);
+const buildIds = FLOW.map((f,i)=>f.build?i:null).filter(i=>i!==null);
+const totalQ = assessedIds.length;
+
+const startScreen=document.getElementById("start-screen");
+const flowScreen=document.getElementById("flow-screen");
+const resultsScreen=document.getElementById("results-screen");
+const topBar=document.getElementById("top-bar");
+const card=document.getElementById("flow-card");
+const backBtn=document.getElementById("back-btn");
+const nextBtn=document.getElementById("next-btn");
+
+document.getElementById("begin-btn").addEventListener("click",()=>{
+  startScreen.classList.add("hidden"); flowScreen.classList.remove("hidden"); topBar.classList.remove("hidden"); render();
+});
+backBtn.addEventListener("click",()=>{ if(state.idx>0){state.idx--;render();} });
+nextBtn.addEventListener("click",()=>{ if(state.idx<FLOW.length-1){state.idx++;render();} else {showResults();} });
+document.getElementById("redo-btn").addEventListener("click",()=>location.reload());
+
+function render(){
+  const item=FLOW[state.idx];
+  document.getElementById("step-count").textContent=`Step ${state.idx+1} of ${FLOW.length}`;
+  document.getElementById("fill").style.width=((state.idx+1)/FLOW.length*100)+"%";
+  backBtn.disabled=state.idx===0;
+  if(item.type==="question") renderQuestion(item);
+  else if(item.type==="essay") renderEssay();
+  else if(item.type==="source") renderSource(item);
+  else renderStatic(item);
+  nextBtn.disabled = item.type==="question" ? !state.revealed[state.idx] : false;
+  nextBtn.innerHTML = state.idx===FLOW.length-1 ? "See results &rarr;" : "Continue &rarr;";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function essayParts(uptoIdx){
+  return buildIds.filter(i=>i<=uptoIdx && state.revealed[i]).map(i=>FLOW[i].part);
+}
+function renderEssay(){
+  const parts=buildIds.map(i=>FLOW[i].part);
+  card.innerHTML=`<div class="stage-tag">${ESSAY_SCREEN.label}</div><h2>${ESSAY_SCREEN.heading}</h2>
+    <p>${ESSAY_SCREEN.intro}</p>
+    <div class="finalessay"><div class="fq">${QUESTION}</div>${parts.map(p=>`<p>${p}</p>`).join("")}</div>
+    <p style="margin-top:1.1rem;color:var(--fade);">${ESSAY_SCREEN.outro}</p>`;
+}
+function renderStatic(item){ card.innerHTML=item.html; bindToggles(); }
+function renderSource(item){
+  let html=item.html;
+  if(item.source){
+    const s=item.source;
+    const ev = s.evidence ? `<span class="evtag ${s.evidence.cls}">${s.evidence.label}</span>` : "";
+    html+=`<div class="source"><div class="source-attr">${s.attr}</div>
+      <div class="source-body">${s.body}</div>${ev}
+      <div><button class="toggle-btn" data-toggle>What does this actually mean?</button></div>
+      <div class="toggle-body" data-toggle-body>${s.toggle}</div></div>`;
+  }
+  card.innerHTML=html;
+  bindToggles();
+}
+function bindToggles(){
+  card.querySelectorAll("[data-toggle]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const body=btn.closest(".source").querySelector("[data-toggle-body]");
+      body.classList.toggle("open");
+      btn.textContent=body.classList.contains("open")?"Hide":"What does this actually mean?";
+    });
+  });
+}
+function renderQuestion(item){
+  const gi=state.idx;
+  if(!state.order[gi]){
+    const arr=item.options.map((_,i)=>i);
+    for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const t=arr[i]; arr[i]=arr[j]; arr[j]=t; }
+    state.order[gi]=arr;
+  }
+  const order=state.order[gi];
+  const revealed=state.revealed[gi];
+  const selected=state.answers[gi];
+  const tag = item.level ? DIFF[item.level] : KIND[item.kind];
+  let optsHtml="";
+  order.forEach((orig,pos)=>{
+    let cls="option"; let mark="";
+    if(revealed){
+      if(orig===item.correct){cls+=" correct"; mark='<span class="opt-mark">&#10003;</span>';}
+      else if(orig===selected){cls+=" wrong"; mark='<span class="opt-mark">&#10007;</span>';}
+      else cls+=" dimmed";
+    } else if(orig===selected) cls+=" selected";
+    optsHtml+=`<button class="${cls}" data-opt="${orig}" ${revealed?"disabled":""}>
+      <span class="opt-letter">${String.fromCharCode(65+pos)}</span>
+      <span class="opt-text">${item.options[orig]}</span>${mark}</button>`;
+  });
+  const explLabel = item.level ? "Why" : "What that shows";
+  let panel="";
+  if(revealed && item.build){
+    panel=`<div class="essaypanel"><div class="essaypanel-label"><span class="tick">&#10003;</span> Added to your essay</div>`
+      + essayParts(gi).map(p=>`<p>${p}</p>`).join("") + `</div>`;
+  }
+  card.innerHTML=`<div class="stage-tag"><span class="chip ${tag.cls}">${tag.label}</span></div>
+    <div class="q-text">${item.q}</div><div class="options">${optsHtml}</div>
+    ${revealed?`<div class="explanation"><div class="expl-label">${explLabel}</div><div class="expl-text">${item.explanation}</div></div>`:""}
+    ${panel}`;
+  if(!revealed){
+    card.querySelectorAll("[data-opt]").forEach(b=>{
+      b.addEventListener("click",()=>{ state.answers[gi]=parseInt(b.dataset.opt); state.revealed[gi]=true; render(); });
+    });
+  }
+}
+function showResults(){
+  flowScreen.classList.add("hidden"); topBar.classList.add("hidden"); resultsScreen.classList.remove("hidden");
+  let correct=0;
+  assessedIds.forEach(i=>{ if(state.answers[i]===FLOW[i].correct) correct++; });
+  const pct=totalQ?Math.round((correct/totalQ)*100):0;
+  let band="-",desc="";
+  for(const b of BANDS){ if(pct>=b.min){ band=b.band; desc=b.desc; break; } }
+  document.getElementById("r-correct").textContent=correct;
+  document.getElementById("r-total").textContent=totalQ;
+  document.getElementById("r-pct").textContent=pct;
+  document.getElementById("r-band").textContent=band;
+  document.getElementById("r-desc").textContent=desc;
+  const bd=document.getElementById("r-breakdown"); bd.innerHTML="";
+  LEVELS.forEach(level=>{
+    const ids=assessedIds.filter(i=>FLOW[i].level===level);
+    const got=ids.filter(i=>state.answers[i]===FLOW[i].correct).length;
+    const p=ids.length?Math.round(got/ids.length*100):0;
+    bd.innerHTML+=`<div class="bd-row"><div class="bd-name">${level}</div>
+      <div class="bd-bar"><div class="bd-fill" style="width:${p}%"></div></div>
+      <div class="bd-score">${got}/${ids.length}</div></div>`;
+  });
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+</script>
+</body>
+</html>
